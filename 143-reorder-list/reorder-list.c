@@ -1,17 +1,32 @@
-void reorderList(struct ListNode* head){
-    struct ListNode* a[50000];
-    int n=0;
-
-    for(struct ListNode* p=head;p;p=p->next)
-        a[n++]=p;
-
-    int l=0,r=n-1;
-    while(l<r){
-        a[l]->next=a[r];
-        l++;
-        if(l==r)break;
-        a[r]->next=a[l];
-        r--;
+struct ListNode* reverse(struct ListNode* head){
+    struct ListNode *prev=NULL,*next;
+    while(head){
+        next=head->next;
+        head->next=prev;
+        prev=head;
+        head=next;
     }
-    a[l]->next=NULL;
+    return prev;
+}
+
+void reorderList(struct ListNode* head){
+    if(!head||!head->next)return;
+
+    struct ListNode *slow=head,*fast=head;
+    while(fast->next&&fast->next->next){
+        slow=slow->next;
+        fast=fast->next->next;
+    }
+
+    struct ListNode* second=reverse(slow->next);
+    slow->next=NULL;
+
+    while(second){
+        struct ListNode* x=head->next;
+        struct ListNode* y=second->next;
+        head->next=second;
+        second->next=x;
+        head=x;
+        second=y;
+    }
 }
