@@ -22,11 +22,13 @@ void reorderList(struct ListNode* head){
     slow->next=NULL;
 
     while(second){
-        struct ListNode* x=head->next;
-        struct ListNode* y=second->next;
+        struct ListNode* next1=head->next;
+        struct ListNode* next2=second->next;
+
         head->next=second;
-        second->next=x;
-        head=x;
-        second=y;
+        second->next=next1;
+
+        head=next1;
+        second=next2;
     }
 }
